@@ -136,20 +136,6 @@ class _MyHomePageState extends State<MyHomePage> {
       color: Color(0xFFF5EDE2),
       child: ListView(
         children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(left: 40.0, top: 40.0),
-            alignment: Alignment.centerLeft,
-            child: CircleAvatar(
-              child: ClipOval(
-                child: Image(
-                  height: 40.0,
-                  width: 40.0,
-                  image: AssetImage('images/user.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
           const SizedBox(height: 40.0),
           SizedBox(
               height: 100.0,
@@ -187,20 +173,6 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Color(0xFFF5EDE2),
         child: ListView(
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.only(left: 40.0, top: 40.0),
-              alignment: Alignment.centerLeft,
-              child: CircleAvatar(
-                child: ClipOval(
-                  child: Image(
-                    height: 40.0,
-                    width: 40.0,
-                    image: AssetImage('images/user.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
             const SizedBox(height: 40.0),
             SizedBox(
                 height: 100.0,
