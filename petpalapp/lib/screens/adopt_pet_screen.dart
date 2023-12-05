@@ -146,7 +146,7 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                       horizontal: 20.0,
                       vertical: 8.0,
                     ),
-                    leading: CircleAvatar(
+                    leading: const CircleAvatar(
                       child: ClipOval(
                         child: Image(
                           height: 40.0,

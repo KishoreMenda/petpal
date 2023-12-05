@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:petpalapp/firebase_options.dart';
 import 'package:petpalapp/screens/home_screen.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
+import 'package:petpalapp/signup.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-      FirebaseApp app = await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-        print('Initialized default Firebase app $app');
+  FirebaseApp app = await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  print('Initialized default Firebase app $app');
   //await FirebaseAppCheck.instance.activate();
   runApp(const MyApp());
 }
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MyHomePage(),
+      home: const SignupPage(),
     );
   }
 }

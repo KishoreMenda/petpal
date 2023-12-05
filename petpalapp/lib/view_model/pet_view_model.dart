@@ -1,4 +1,3 @@
-
 class Category {
   String name;
   String type;
@@ -54,7 +53,8 @@ Future updatedSortedList(String petType) async {
     filteredPets = pets;
   } else if (petType.toLowerCase() == 'other') {
     filteredPets = pets
-        .where((pet) => !['dog', 'cat', 'bird'].contains(pet.petType.toLowerCase()))
+        .where((pet) =>
+            !['dog', 'cat', 'bird'].contains(pet.petType.toLowerCase()))
         .toList();
   } else {
     filteredPets = pets
