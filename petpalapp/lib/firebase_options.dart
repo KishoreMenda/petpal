@@ -44,38 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBZPg0HnQZMGMSrtDuUdEkr5Nb04XTt-3c',
-    appId: '1:166898504450:web:8de8f7a5de1db0d442a81b',
-    messagingSenderId: '166898504450',
-    projectId: 'petpal-db',
-    authDomain: 'petpal-db.firebaseapp.com',
-    storageBucket: 'petpal-db.appspot.com',
-    measurementId: 'G-LTE4H30JNB',
+    apiKey: 'AIzaSyBauyWzTlGufn0wjmsFPKeb5TGCB0RSusw',
+    appId: '1:922997148557:web:0f6b1589195a7af45bcbc4',
+    messagingSenderId: '922997148557',
+    projectId: 'petpal-19593',
+    authDomain: 'petpal-19593.firebaseapp.com',
+    storageBucket: 'petpal-19593.appspot.com',
+    measurementId: 'G-7VVR1Y2BQP',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBL4jjb2tvvrqsb7586ZfMFeF8eCgS16do',
-    appId: '1:166898504450:android:1a25b8b3159597d342a81b',
-    messagingSenderId: '166898504450',
-    projectId: 'petpal-db',
-    storageBucket: 'petpal-db.appspot.com',
+    apiKey: 'AIzaSyAaA7k4FHQNx5o5LoDgUIsiy_2zqIOEZb0',
+    appId: '1:922997148557:android:0d08e84ff83e2a005bcbc4',
+    messagingSenderId: '922997148557',
+    projectId: 'petpal-19593',
+    storageBucket: 'petpal-19593.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAm1jPkm59MRePpPhSmEAYc66pH5KTDFag',
-    appId: '1:166898504450:ios:c7088319f46bad7842a81b',
-    messagingSenderId: '166898504450',
-    projectId: 'petpal-db',
-    storageBucket: 'petpal-db.appspot.com',
+    apiKey: 'AIzaSyC3xlzmOjSHoZ4HyCC2oK6a_WCyO22hKXM',
+    appId: '1:922997148557:ios:fcaa81fe19a3ff2e5bcbc4',
+    messagingSenderId: '922997148557',
+    projectId: 'petpal-19593',
+    storageBucket: 'petpal-19593.appspot.com',
     iosBundleId: 'com.example.petpalapp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAm1jPkm59MRePpPhSmEAYc66pH5KTDFag',
-    appId: '1:166898504450:ios:687f2667c14aecff42a81b',
-    messagingSenderId: '166898504450',
-    projectId: 'petpal-db',
-    storageBucket: 'petpal-db.appspot.com',
+    apiKey: 'AIzaSyC3xlzmOjSHoZ4HyCC2oK6a_WCyO22hKXM',
+    appId: '1:922997148557:ios:0062ab2a897e00e55bcbc4',
+    messagingSenderId: '922997148557',
+    projectId: 'petpal-19593',
+    storageBucket: 'petpal-19593.appspot.com',
     iosBundleId: 'com.example.petpalapp.RunnerTests',
   );
 }

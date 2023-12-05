@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "166898504450",
-    "project_id": "petpal-db",
-    "storage_bucket": "petpal-db.appspot.com"
+    "project_number": "922997148557",
+    "project_id": "petpal-19593",
+    "storage_bucket": "petpal-19593.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:166898504450:android:1a25b8b3159597d342a81b",
+        "mobilesdk_app_id": "1:922997148557:android:0d08e84ff83e2a005bcbc4",
         "android_client_info": {
           "package_name": "com.example.petpalapp"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBL4jjb2tvvrqsb7586ZfMFeF8eCgS16do"
+          "current_key": "AIzaSyAaA7k4FHQNx5o5LoDgUIsiy_2zqIOEZb0"
         }
       ],
       "services": {
