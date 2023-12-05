@@ -3,9 +3,11 @@ import 'package:petpalapp/screens/add_pet_screen.dart';
 import 'package:petpalapp/screens/adopt_pet_screen.dart';
 import 'package:petpalapp/storage.dart';
 import 'package:petpalapp/view_model/pet_view_model.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key});
+  MyHomePage({Key? key, this.googleUser}) : super(key: key);
+  GoogleSignInAccount? googleUser;
 
   final CounterStorage firebaseStoreage = CounterStorage();
   @override

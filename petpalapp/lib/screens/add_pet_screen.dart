@@ -119,8 +119,8 @@ class _AddPetScreenState extends State<AddPetScreen> {
                     selectedPetType = newValue!;
                   });
                 },
-                items:
-                    <String>['Cat', 'Dog', 'Bird', 'Others'].map((String value) {
+                items: <String>['Cat', 'Dog', 'Bird', 'Others']
+                    .map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Container(

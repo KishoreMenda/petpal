@@ -12,7 +12,20 @@
           "package_name": "com.example.petpalapp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "922997148557-tm69n1grckkmk5u2tkfitmb9csjd15bi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.petpalapp",
+            "certificate_hash": "9ba6f751d7ce0aeaa86d10378780934d7fb77f5f"
+          }
+        },
+        {
+          "client_id": "922997148557-qhqqvq6g1csoj9nre3jrrd2efnk0dd5a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAaA7k4FHQNx5o5LoDgUIsiy_2zqIOEZb0"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "922997148557-qhqqvq6g1csoj9nre3jrrd2efnk0dd5a.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "922997148557-6l31gm402bast6kq9800a11c5m10s4go.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.petpalapp"
+              }
+            }
+          ]
         }
       }
     }
