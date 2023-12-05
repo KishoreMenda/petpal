@@ -40,6 +40,7 @@ class CounterStorage {
           // Convert each document to a Pet object or use it as needed
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           return Pet(
+              owner: owner,
               name: data['name'].toString(),
               imageUrl: data['imageUrl'].toString(),
               description: data['description'].toString(),

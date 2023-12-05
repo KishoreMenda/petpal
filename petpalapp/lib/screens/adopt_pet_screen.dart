@@ -151,7 +151,7 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                         child: Image(
                           height: 40.0,
                           width: 40.0,
-                          image: AssetImage('images/user.png'),
+                          image: AssetImage(owner.imageUrl),
                           fit: BoxFit.cover,
                         ),
                       ),

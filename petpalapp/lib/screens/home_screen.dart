@@ -3,9 +3,12 @@ import 'package:petpalapp/screens/add_pet_screen.dart';
 import 'package:petpalapp/screens/adopt_pet_screen.dart';
 import 'package:petpalapp/storage.dart';
 import 'package:petpalapp/view_model/pet_view_model.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key});
+  MyHomePage({Key? key, this.googleUser}) : super(key: key);
+  GoogleSignInAccount? googleUser;
+
   final CounterStorage firebaseStoreage = CounterStorage();
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -136,6 +139,20 @@ class _MyHomePageState extends State<MyHomePage> {
       color: Color(0xFFF5EDE2),
       child: ListView(
         children: <Widget>[
+          Container(
+            padding: const EdgeInsets.only(left: 40.0, top: 40.0),
+            alignment: Alignment.centerLeft,
+            child: CircleAvatar(
+              child: ClipOval(
+                child: Image(
+                  height: 40.0,
+                  width: 40.0,
+                  image: AssetImage(owner.imageUrl),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
           const SizedBox(height: 40.0),
           SizedBox(
               height: 100.0,

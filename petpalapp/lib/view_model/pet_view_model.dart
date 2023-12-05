@@ -1,3 +1,14 @@
+class Owner {
+  String name;
+  String imageUrl;
+  String bio;
+
+  Owner({
+    required this.name,
+    required this.imageUrl,
+    required this.bio,
+  });
+}
 
 class Category {
   String name;
@@ -10,6 +21,7 @@ class Category {
 }
 
 class Pet {
+  final Owner owner;
   final String ownerName;
   final String name;
   final String imageUrl;
@@ -22,6 +34,7 @@ class Pet {
   final String phoneNumber;
 
   Pet({
+    required this.owner,
     required this.ownerName,
     required this.name,
     required this.imageUrl,
@@ -43,6 +56,11 @@ var categories = [
   Category(name: 'Others', type: 'Other'),
 ];
 
+var owner = Owner(
+    name: 'Roselia Drew',
+    imageUrl: 'images/user.png',
+    bio:
+        'I recently lost my job and don\'t have enough time or money to tend to Darlene anymore. I have a lot of health issues that need attention and want to give Darlene the best life possible.');
 var filteredPets = [];
 var lastFilterType = '';
 var pets = [];
@@ -54,7 +72,8 @@ Future updatedSortedList(String petType) async {
     filteredPets = pets;
   } else if (petType.toLowerCase() == 'other') {
     filteredPets = pets
-        .where((pet) => !['dog', 'cat', 'bird'].contains(pet.petType.toLowerCase()))
+        .where((pet) =>
+            !['dog', 'cat', 'bird'].contains(pet.petType.toLowerCase()))
         .toList();
   } else {
     filteredPets = pets

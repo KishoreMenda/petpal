@@ -67,6 +67,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '922997148557',
     projectId: 'petpal-19593',
     storageBucket: 'petpal-19593.appspot.com',
+    androidClientId: '922997148557-tm69n1grckkmk5u2tkfitmb9csjd15bi.apps.googleusercontent.com',
+    iosClientId: '922997148557-6l31gm402bast6kq9800a11c5m10s4go.apps.googleusercontent.com',
     iosBundleId: 'com.example.petpalapp',
   );
 
@@ -76,6 +78,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '922997148557',
     projectId: 'petpal-19593',
     storageBucket: 'petpal-19593.appspot.com',
+    androidClientId: '922997148557-tm69n1grckkmk5u2tkfitmb9csjd15bi.apps.googleusercontent.com',
+    iosClientId: '922997148557-b6nekblofk80iu4bs2umrlvai0ia16i6.apps.googleusercontent.com',
     iosBundleId: 'com.example.petpalapp.RunnerTests',
   );
 }
