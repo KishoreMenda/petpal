@@ -66,10 +66,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   //         .contains("firebasestorage")
                   //     ? NetworkImage(pets[index].imageUrl.toString())
                   //     : AssetImage(pets[index].imageUrl.toString()),
-                  image: (filteredPets[index].imageUrl.contains("firebasestorage"))
-                   ? NetworkImage(filteredPets[index].imageUrl.toString())
-                  : const AssetImage('images/lab.png') as ImageProvider,
-                  
+                  image: (filteredPets[index]
+                          .imageUrl
+                          .contains("firebasestorage"))
+                      ? NetworkImage(filteredPets[index].imageUrl.toString())
+                      : const AssetImage('images/lab.png') as ImageProvider,
+
                   // image: NetworkImage(pets[index].imageUrl.toString()),
                   //  image: AssetImage(pets[index].imageUrl.toString()),
                   fit: BoxFit.cover,
@@ -99,16 +101,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildPetCategory(bool isSelected, int itemIndex, String category) {
     return GestureDetector(
       onTap: () async => {
-
-        print('currentCategoryIndex $currentCategoryIndex categories[currentCategoryIndex].name ${categories[itemIndex].name}'),
+        print(
+            'currentCategoryIndex $currentCategoryIndex categories[currentCategoryIndex].name ${categories[itemIndex].name}'),
 
         await updatedSortedList(categories[itemIndex].type),
-         
-    //  List<Map<String, dynamic>> filteredList = pets
-    //   .map((dynamic item) => item as Map<String, dynamic>)
-    //   .toList().where((pet) => pet['petType'] == categories[currentCategoryIndex].name).toList();
 
-
+        //  List<Map<String, dynamic>> filteredList = pets
+        //   .map((dynamic item) => item as Map<String, dynamic>)
+        //   .toList().where((pet) => pet['petType'] == categories[currentCategoryIndex].name).toList();
 
         setState(() {
           currentCategoryIndex = itemIndex;
@@ -167,86 +167,90 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: ListView(
-        children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(left: 40.0, top: 40.0),
-            alignment: Alignment.centerLeft,
-            child: CircleAvatar(
-              child: ClipOval(
-                child: Image(
-                  height: 40.0,
-                  width: 40.0,
-                  image: AssetImage(owner.imageUrl),
-                  fit: BoxFit.cover,
+        backgroundColor: Colors.white,
+        body: Container(
+          height: double.infinity,
+          color: Color(0xFFF5EDE2),
+          child: ListView(
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.only(left: 40.0, top: 40.0),
+                alignment: Alignment.centerLeft,
+                child: CircleAvatar(
+                  child: ClipOval(
+                    child: Image(
+                      height: 40.0,
+                      width: 40.0,
+                      image: AssetImage(owner.imageUrl),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(height: 40.0),
+              ElevatedButton(
+                onPressed: () async {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => AddPetScreen(),
+                    ),
+                  );
+                },
+                child: Text('Add new pet info'),
+              ),
+              const SizedBox(height: 40.0),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 40.0),
+              //   child: TextField(
+              //     style: TextStyle(
+              //       fontFamily: 'Montserrat',
+              //       fontSize: 22.0,
+              //     ),
+              //     decoration: InputDecoration(
+              //       border: InputBorder.none,
+              //       prefixIcon: Padding(
+              //         padding: EdgeInsets.only(right: 30.0),
+              //         child: Icon(
+              //           Icons.add_location,
+              //           color: Colors.black,
+              //           size: 40.0,
+              //         ),
+              //       ),
+              //       labelText: 'Location',
+              //       labelStyle: TextStyle(
+              //         fontSize: 20.0,
+              //         color: Colors.grey,
+              //       ),
+              //       contentPadding: EdgeInsets.only(bottom: 20.0),
+              //     ),
+              //   ),
+              // ),
+              // const Padding(
+              //   padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
+              //   child: Divider(),
+              // ),
+              SizedBox(
+                  height: 100.0,
+                  child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      controller: _scrollController,
+                      itemCount: categories.length,
+                      itemBuilder: (context, index) {
+                        return _buildPetCategory(index == currentCategoryIndex,
+                            index, categories[index].name);
+                      })),
+              SizedBox(
+                  height: 600.0,
+                  width: 500.0,
+                  child: ListView.builder(
+                      controller: _petsScrollController,
+                      itemCount: filteredPets.length,
+                      itemBuilder: (context, index) {
+                        return _buildPetItem(
+                            index == currentCategoryIndex, index);
+                      })),
+            ],
           ),
-          const SizedBox(height: 40.0),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (_) => AddPetScreen(),
-                ),
-              );
-            },
-            child: Text('Add new pet info'),
-          ),
-          const SizedBox(height: 40.0),
-          // const Padding(
-          //   padding: EdgeInsets.symmetric(horizontal: 40.0),
-          //   child: TextField(
-          //     style: TextStyle(
-          //       fontFamily: 'Montserrat',
-          //       fontSize: 22.0,
-          //     ),
-          //     decoration: InputDecoration(
-          //       border: InputBorder.none,
-          //       prefixIcon: Padding(
-          //         padding: EdgeInsets.only(right: 30.0),
-          //         child: Icon(
-          //           Icons.add_location,
-          //           color: Colors.black,
-          //           size: 40.0,
-          //         ),
-          //       ),
-          //       labelText: 'Location',
-          //       labelStyle: TextStyle(
-          //         fontSize: 20.0,
-          //         color: Colors.grey,
-          //       ),
-          //       contentPadding: EdgeInsets.only(bottom: 20.0),
-          //     ),
-          //   ),
-          // ),
-          // const Padding(
-          //   padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
-          //   child: Divider(),
-          // ),
-          SizedBox(
-              height: 100.0,
-              child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  controller: _scrollController,
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    return _buildPetCategory(index == currentCategoryIndex,
-                        index, categories[index].name);
-                  })),
-          SizedBox(
-              height: 600.0,
-              width: 500.0,
-              child: ListView.builder(
-                  controller: _petsScrollController,
-                  itemCount: filteredPets.length,
-                  itemBuilder: (context, index) {
-                    return _buildPetItem(index == currentCategoryIndex, index);
-                  })),
-        ],
-      ),
-    );
+        ));
   }
 }
