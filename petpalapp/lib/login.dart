@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:petpalapp/screens/home_screen.dart';
+import 'package:petpalapp/view_model/user_view_model.dart' as petpaluser;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -13,14 +15,18 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
+  petpaluser.User? appUser;
   void _authenticate() async {
     try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text, password: _passwordController.text);
+      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: _emailController.text, password: _passwordController.text);
+      await getUserDetails(_emailController.text);
+
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => MyHomePage(googleUser: null)),
+        MaterialPageRoute(
+            builder: (context) => MyHomePage(
+                  appUser: appUser,
+                )),
       );
     } on FirebaseAuthException catch (e) {
       String errorMessage;
@@ -34,15 +40,32 @@ class _LoginPageState extends State<LoginPage> {
       } else if (e.code == 'wrong-password') {
         errorMessage = 'Wrong password provided for that user.';
       } else if (e.code == 'too-many-request') {
-        errorMessage =
-            'Access to this account has been temporarily disabled due to many failed login attempts.';
+        errorMessage = 'Access to this account has been temporarily disabled due to many failed login attempts.';
       } else {
         errorMessage = 'error in login authentication';
       }
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(errorMessage),
-          duration: const Duration(seconds: 4),
-          behavior: SnackBarBehavior.fixed));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(errorMessage), duration: const Duration(seconds: 4), behavior: SnackBarBehavior.fixed));
+    }
+  }
+
+  Future<void> getUserDetails(String userEmail) async {
+    try {
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
+          .collection('users') // Change to your collection name
+          .where('email', isEqualTo: userEmail)
+          .limit(1) // Assuming there's only one user with the same email
+          .get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        // Assuming each document in the "users" collection has a "name" field
+        String u_name = querySnapshot.docs.first.get('name');
+        String u_email = querySnapshot.docs.first.get('email');
+        appUser = petpaluser.User(name: u_name, email: u_email);
+      } else {
+        print('User not found in Firebase with email: $userEmail');
+      }
+    } catch (e) {
+      print('Error retrieving user details from Firebase: $e');
     }
   }
 
