@@ -46,6 +46,12 @@ dependencies:
   fluttertoast: ^8.2.4
   google_sign_in: ^6.1.6
   firebase_auth: ^4.15.0
+  geolocator: ^10.1.0
+  url_launcher: ^6.2.1
+  geocoding: ^2.1.1
+  google_maps_flutter: ^2.5.0
+  http: ^1.1.0
+  convert: ^3.1.1
 
   # provider: ^6.1.1
   # image_picker: ^0.8.3
@@ -78,6 +84,7 @@ flutter:
     - images/lab.png
     - images/user.png
     - images/pug.jpg
+    - assets/images/LoginPage.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

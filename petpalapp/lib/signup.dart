@@ -3,10 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:petpalapp/login.dart';
 import 'package:petpalapp/google_login.dart';
+import 'package:petpalapp/storage.dart';
 
 class SignupPage extends StatefulWidget {
-  const SignupPage({super.key});
+  SignupPage({super.key});
 
+  final CounterStorage firebaseStorage = CounterStorage();
   @override
   State<SignupPage> createState() => _SignupPageState();
 }
@@ -44,6 +46,9 @@ class _SignupPageState extends State<SignupPage> {
           email: _emailController.text,
           password: _passwordController.text,
         );
+        if (userCredential != null) {
+          storeUserInFirebase();
+        }
         if (kDebugMode) {
           print('User email: ${_emailController.text}');
         }
@@ -86,7 +91,7 @@ class _SignupPageState extends State<SignupPage> {
                           children: [
                             const SizedBox(height: 40.0), // Added padding at the top
                             const Text(
-                              'Create account in PetPal!',
+                              'Welcome to PetPal!',
                               style: TextStyle(
                                 fontSize: 24.0,
                                 fontWeight: FontWeight.bold,
@@ -134,6 +139,33 @@ class _SignupPageState extends State<SignupPage> {
                               ),
                             ),
                             ElevatedButton(onPressed: _submitForm, child: const Text('Sign Up')),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Divider(
+                                    color: Colors.black,
+                                    thickness: 1.0,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Text(
+                                    'OR',
+                                    style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Divider(
+                                    color: Colors.black,
+                                    thickness: 1.0,
+                                  ),
+                                ),
+                              ],
+                            ),
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
@@ -158,5 +190,25 @@ class _SignupPageState extends State<SignupPage> {
                             ),
                           ],
                         ))))));
+  }
+
+  Future<void> storeUserInFirebase() async {
+    try {
+      // Create a map with user details
+      String fullName = '${_firstNameController.text} ${_lastNameController.text}';
+      String email = _emailController.text;
+
+      // Create a map with user details
+      Map<String, String> userMap = {
+        'name': fullName,
+        'email': email,
+      };
+      // Call the writePetDetailsMap function to store the user details in Firebase
+      await widget.firebaseStorage.writeUserDetails(userMap);
+
+      print('Google User details stored in Firebase.');
+    } catch (e) {
+      print('Error storing Google User details: $e');
+    }
   }
 }

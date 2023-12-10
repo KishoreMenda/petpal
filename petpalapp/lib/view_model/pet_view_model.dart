@@ -12,18 +12,21 @@ class Pet {
   final String color;
   final String id;
   final String petType;
+  final String latit;
+  final String longit;
 
-  Pet({
-    required this.owner,
-    required this.name,
-    required this.imageUrl,
-    required this.description,
-    required this.age,
-    required this.sex,
-    required this.color,
-    required this.id,
-    required this.petType,
-  });
+  Pet(
+      {required this.owner,
+      required this.name,
+      required this.imageUrl,
+      required this.description,
+      required this.age,
+      required this.sex,
+      required this.color,
+      required this.id,
+      required this.petType,
+      required this.latit,
+      required this.longit});
 }
 
 var categories = [

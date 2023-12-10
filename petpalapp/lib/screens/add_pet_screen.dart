@@ -1,5 +1,9 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:petpalapp/storage.dart';
@@ -8,6 +12,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geolocator_platform_interface/src/enums/location_accuracy.dart'
+    as geo;
+import 'package:url_launcher/url_launcher.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:petpalapp/screens/map_screen.dart';
+import 'package:http/http.dart' as http;
 
 class AddPetScreen extends StatefulWidget {
   AddPetScreen();
@@ -45,9 +56,13 @@ class _AddPetScreenState extends State<AddPetScreen> {
 
   MapController mapController = MapController();
   LocationData? currentLocation;
+  LatLng? selectedLocation;
 
   GlobalKey<FormState> key = GlobalKey();
   File? _image;
+  late Future<Position> _position;
+  late Stream<Position> positionStream;
+  late StreamSubscription<Position> positionSubscriberStream;
 
   CollectionReference _reference =
       FirebaseFirestore.instance.collection('petpal_db');
@@ -61,6 +76,8 @@ class _AddPetScreenState extends State<AddPetScreen> {
   String owner = '';
   String petType = '';
   String selectedPetType = 'Cat';
+  String latitude = '';
+  String longitude = '';
 
   @override
   Widget build(BuildContext context) {
@@ -178,12 +195,56 @@ class _AddPetScreenState extends State<AddPetScreen> {
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () async {
-                  String location = await _getLocation();
-                  context.read<UserData>().setLocation(location);
+                  print('Clicked on mapssss');
+                  // Open the MapScreen and get the selected location
+                  try {
+                    LatLng? location =
+                        await Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => MapScreen(
+                        initialLocation: LatLng(
+                          double.parse(latitude),
+                          double.parse(longitude),
+                        ),
+                      ),
+                    ));
+
+                    // Update the selected location in the state
+                    if (location != null) {
+                      setState(() {
+                        selectedLocation = location;
+                        latitude = selectedLocation!.latitude.toString();
+                        longitude = selectedLocation!.longitude.toString();
+                      });
+                      print('Selected Location: $selectedLocation');
+                    }
+                  } catch (e) {
+                    print('Error parsing latitude/longitude: $e');
+                  }
                 },
-                child: Text('Choose Location'),
+                child: Text('Set Location on Map'),
               ),
+              // Text(
+              //   'Selected Location on Map: ${selectedLocation?.latitude ?? ''}, ${selectedLocation?.longitude ?? ''}',
+              // ),
               const SizedBox(height: 16.0),
+              FutureBuilder<Position>(
+                future: _position,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const CircularProgressIndicator();
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else if (!snapshot.hasData) {
+                    return const Text('No data available');
+                  } else {
+                    latitude = snapshot.data!.latitude.toString();
+                    longitude = snapshot.data!.longitude.toString();
+                    return Text(
+                      'Present location: ${latitude}, ${longitude}',
+                    );
+                  }
+                },
+              ),
               const SizedBox(height: 16.0),
               ElevatedButton(
                 onPressed: () async {
@@ -238,7 +299,9 @@ class _AddPetScreenState extends State<AddPetScreen> {
                     "age": age,
                     "sex": gender,
                     "color": 'Black',
-                    "id": '12345'
+                    "id": '12345',
+                    "latit": latitude,
+                    "longit": longitude
                   });
                 },
                 child: Text('Submit'),
@@ -250,12 +313,95 @@ class _AddPetScreenState extends State<AddPetScreen> {
     );
   }
 
-  Future<String> _getLocation() async {
-    Location location = Location();
-    LocationData locationData = await location.getLocation();
-    return "Lat: ${locationData.latitude}, Long: ${locationData.longitude}";
-    // return "";
+  @override
+  void initState() {
+    super.initState();
+    _position = _determinePosition();
+    LocationSettings locationSettings = LocationSettings(
+      accuracy: geo.LocationAccuracy.high,
+      distanceFilter: 100,
+    );
+    positionStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings);
+    positionSubscriberStream =
+        Geolocator.getPositionStream(locationSettings: locationSettings)
+            .listen((Position? position) {
+      if (kDebugMode) {
+        print(position == null
+            ? 'Unknown'
+            : '${position.latitude.toString()}, ${position.longitude.toString()}');
+      }
+    });
   }
+
+  Future<String> reverseGeocode(double lat, double lon, String apiKey) async {
+    final baseUrl = 'maps.googleapis.com';
+    final path = '/maps/api/geocode/json';
+    final params = {
+      'latlng': '$lat,$lon',
+      'key': apiKey,
+    };
+
+    final uri = Uri.https(baseUrl, path, params);
+
+    final response = await http.get(uri);
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+
+      if (data['status'] == 'OK' && data['results'] != null) {
+        // Extract the formatted address from the first result
+        final formattedAddress = data['results'][0]['formatted_address'];
+        return formattedAddress;
+      }
+    }
+
+    return 'Reverse geocoding failed';
+  }
+
+  Future<Position> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    // When we reach here, permissions are granted and we can
+    // continue accessing the position of the device.
+    return await Geolocator.getCurrentPosition();
+  }
+
+  // Future<String> _getLocation() async {
+  //   Location location = Location();
+  //   LocationData locationData = await location.getLocation();
+  //   return "Lat: ${locationData.latitude}, Long: ${locationData.longitude}";
+  //   // return "";
+  // }
 
   void _pickImageFromCamera() async {
     ImagePicker imagePicker = ImagePicker();

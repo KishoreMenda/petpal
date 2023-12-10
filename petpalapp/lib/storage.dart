@@ -42,16 +42,17 @@ class CounterStorage {
           // Convert each document to a Pet object or use it as needed
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           return Pet(
-            owner: owner,
-            name: data['name'].toString(),
-            imageUrl: data['imageUrl'].toString(),
-            description: data['description'].toString(),
-            age: data['age'].toString(),
-            sex: data['sex'].toString(),
-            color: data['color'].toString(),
-            id: data['id'].toString(),
-            petType: data['petType'].toString(),
-          );
+              owner: owner,
+              name: data['name'].toString(),
+              imageUrl: data['imageUrl'].toString(),
+              description: data['description'].toString(),
+              age: data['age'].toString(),
+              sex: data['sex'].toString(),
+              color: data['color'].toString(),
+              id: data['id'].toString(),
+              petType: data['petType'].toString(),
+              latit: data['latit'].toString(),
+              longit: data['longit'].toString());
         }).toList();
         onDataChanged?.call();
         updatedSortedList(lastFilterType);
@@ -85,6 +86,28 @@ class CounterStorage {
         print("set inputMap sucess");
       }).catchError((error) {
         print("Failed to set counter: $error");
+      });
+    } catch (e) {
+      print(e);
+    }
+
+    return false;
+  }
+
+  Future<bool> writeUserDetails(Map<String, String> inputMap) async {
+    try {
+      if (!isInitialized) {
+        await initializeDefault();
+      }
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      await firestore
+          .collection("users")
+          .doc(DateTime.now().millisecondsSinceEpoch.toString())
+          .set(inputMap)
+          .then((value) {
+        print("Set user details successfully");
+      }).catchError((error) {
+        print("Failed to set user details: $error");
       });
     } catch (e) {
       print(e);
