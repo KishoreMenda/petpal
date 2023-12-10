@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:petpalapp/screens/add_pet_screen.dart';
 import 'package:petpalapp/screens/adopt_pet_screen.dart';
 import 'package:petpalapp/storage.dart';
+import 'package:petpalapp/userprofile.dart';
 import 'package:petpalapp/view_model/pet_view_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:petpalapp/view_model/user_view_model.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.googleUser}) : super(key: key);
-  GoogleSignInAccount? googleUser;
+  MyHomePage({Key? key, this.appUser}) : super(key: key);
+  final User? appUser;
 
   final CounterStorage firebaseStoreage = CounterStorage();
   @override
@@ -190,6 +193,32 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Color(0xFFF5EDE2),
         child: ListView(
           children: <Widget>[
+            Container(
+              padding: const EdgeInsets.only(left: 40.0, top: 40.0),
+              alignment: Alignment.centerLeft,
+              child: GestureDetector(
+                onTap: () {
+                  // Navigate to UserProfileScreen when the CircleAvatar is tapped
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          UserProfilePage(appUser: widget.appUser),
+                    ),
+                  );
+                },
+                child: CircleAvatar(
+                  child: ClipOval(
+                    child: Image(
+                      height: 40.0,
+                      width: 40.0,
+                      image: AssetImage('images/user.png'),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ),
+            ),
             const SizedBox(height: 40.0),
             SizedBox(
                 height: 100.0,

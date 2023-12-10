@@ -19,6 +19,8 @@ class Pet {
   final String petType;
   final String emailID;
   final String phoneNumber;
+  final String latit;
+  final String longit;
 
   Pet({
     required this.ownerName,
@@ -30,7 +32,9 @@ class Pet {
     required this.weight,
     required this.petType,
     required this.emailID,
-    required this.phoneNumber
+    required this.phoneNumber,
+    required this.latit,
+    required this.longit
   });
 }
 

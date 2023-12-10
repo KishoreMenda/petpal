@@ -49,7 +49,9 @@ class CounterStorage {
               petType: data['petType'].toString(),
               ownerName: data['ownerName'].toString(),
               emailID: data['emailID'].toString(),
-              phoneNumber: data['phoneNumber'].toString());
+              phoneNumber: data['phoneNumber'].toString(),
+              latit: data['latit'].toString(),
+              longit: data['longit'].toString());
         }).toList();
         onDataChanged?.call();
         updatedSortedList(lastFilterType);
@@ -83,6 +85,28 @@ class CounterStorage {
         print("set inputMap sucess");
       }).catchError((error) {
         print("Failed to set counter: $error");
+      });
+    } catch (e) {
+      print(e);
+    }
+
+    return false;
+  }
+
+  Future<bool> writeUserDetails(Map<String, String> inputMap) async {
+    try {
+      if (!isInitialized) {
+        await initializeDefault();
+      }
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      await firestore
+          .collection("users")
+          .doc(DateTime.now().millisecondsSinceEpoch.toString())
+          .set(inputMap)
+          .then((value) {
+        print("Set user details successfully");
+      }).catchError((error) {
+        print("Failed to set user details: $error");
       });
     } catch (e) {
       print(e);
