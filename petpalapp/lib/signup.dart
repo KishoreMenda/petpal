@@ -82,7 +82,7 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
         body: SingleChildScrollView(
             child: Container(
-                color: Colors.white,
+                color: Color(0xFFF5EDE2),
                 child: Center(
                     child: Form(
                         key: _formKey,
@@ -188,6 +188,7 @@ class _SignupPageState extends State<SignupPage> {
                               },
                               child: const Text('Sign in with Google'),
                             ),
+                            const SizedBox(height: 320.0),
                           ],
                         ))))));
   }

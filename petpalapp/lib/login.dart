@@ -73,7 +73,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-            color: Colors.white,
+            color: Color(0xFFF5EDE2),
             child: Center(
                 child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

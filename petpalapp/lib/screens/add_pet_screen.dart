@@ -247,13 +247,13 @@ class _AddPetScreenState extends State<AddPetScreen> {
                     },
                     decoration: InputDecoration(labelText: 'Email ID'),
                   ),
-                  TextField(
-                    onChanged: (value) => {
-                      print("onChanged $value"),
-                      phoneNumber = value,
-                    },
-                    decoration: InputDecoration(labelText: 'Phone Number'),
-                  ),
+                  // TextField(
+                  //   onChanged: (value) => {
+                  //     print("onChanged $value"),
+                  //     phoneNumber = value,
+                  //   },
+                  //   decoration: InputDecoration(labelText: 'Phone Number'),
+                  // ),
                   const SizedBox(height: 16.0),
                   ElevatedButton(
                     onPressed: () async {
@@ -334,7 +334,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                             description == '' ||
                             ownerName == '' ||
                             emailID == '' ||
-                            phoneNumber == '' ||
+                           // phoneNumber == '' ||
                             selectedCategory == CategoryLabel.choose) {
                           showToast('Fill all the info');
 

@@ -13,8 +13,14 @@ class UserProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('User Profile'),
+        backgroundColor: Color(0xFFF5EDE2),
       ),
-      body: Column(
+      body: Container(
+      height: double.infinity,
+      width: double.infinity,
+      color: Color(0xFFF5EDE2),
+      child:
+      Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           CircleAvatar(
@@ -33,6 +39,7 @@ class UserProfilePage extends StatelessWidget {
             child: const Text("Logout"),
           ),
         ],
+      ),
       ),
     );
   }
