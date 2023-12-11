@@ -38,8 +38,16 @@ class _MyHomePageState extends State<MyHomePage> {
           ));
           break;
         }
-
       case 1:
+      {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (_) => UserProfilePage(appUser: widget.appUser),
+          ));
+          break;
+        
+      }
+
+      case 2:
         {
           Navigator.of(context).push(MaterialPageRoute(
             builder: (_) => AddPetScreen(),
@@ -103,8 +111,8 @@ class _MyHomePageState extends State<MyHomePage> {
         }),
       },
       child: Container(
-        margin: const EdgeInsets.all(10.0),
-        width: 80.0,
+        margin: const EdgeInsets.all(9.0),
+        width: 60.0,
         decoration: BoxDecoration(
           color: isSelected ? Color(0xFFED7A4D) : Color(0xFFF8F2F7),
           borderRadius: BorderRadius.circular(20.0),
@@ -113,7 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
           child: Text(
             category,
             style: TextStyle(
-              fontFamily: 'Montserrat',
               fontSize: 14.0,
               fontWeight: FontWeight.w600,
               color: isSelected ? Colors.white : Colors.black,
@@ -267,6 +274,15 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
+              title: const Text('Profile'),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => UserProfilePage(appUser: widget.appUser),
+                  
+                ));
+              },
+            ),
+            ListTile(
               title: const Text('Add pet'),
               onTap: () {
                 Navigator.of(context).push(
@@ -285,6 +301,10 @@ class _MyHomePageState extends State<MyHomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),

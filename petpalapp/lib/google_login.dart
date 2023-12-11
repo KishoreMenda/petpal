@@ -120,12 +120,18 @@ class _GoogleLoginState extends State<GoogleLogin> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('login with google'),
+        backgroundColor: const Color(0xFFF5EDE2),
       ),
-      body: Center(
-          child: Column(
+      body: Container (
+        color: Color(0xFFF5EDE2),
+          child: Center(
+            
+            child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: getBody(),
-      )),
+      )
+      )
+    )
     );
   }
 
