@@ -7,6 +7,7 @@ import 'package:petpalapp/userprofile.dart';
 import 'package:petpalapp/view_model/pet_view_model.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:petpalapp/view_model/user_view_model.dart';
+import 'package:petpalapp/screens/favorite_pet screen.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, this.appUser}) : super(key: key);
@@ -39,13 +40,12 @@ class _MyHomePageState extends State<MyHomePage> {
           break;
         }
       case 1:
-      {
-        Navigator.of(context).push(MaterialPageRoute(
+        {
+          Navigator.of(context).push(MaterialPageRoute(
             builder: (_) => UserProfilePage(appUser: widget.appUser),
           ));
           break;
-        
-      }
+        }
 
       case 2:
         {
@@ -69,31 +69,28 @@ class _MyHomePageState extends State<MyHomePage> {
       onTap: () => {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (_) => AdoptPetScreen(pet: filteredPets[index]),
+            builder: (_) => AdoptPetScreen(
+              pet: filteredPets[index],
+              appUserf: widget.appUser,
+            ),
           ),
         ),
         print('Selected $index ')
       },
       child: Column(
         children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(10.0),
-              width: double.infinity,
-              height: 250.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  image: (filteredPets[index]
-                          .imageUrl
-                          .contains("firebasestorage"))
-                      ? NetworkImage(filteredPets[index].imageUrl.toString())
-                      : const AssetImage('images/no_image.png') as ImageProvider,
-                  fit: BoxFit.cover,
-                ),
+          Container(
+            padding: const EdgeInsets.all(10.0),
+            width: double.infinity,
+            height: 250.0,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: (filteredPets[index].imageUrl.contains("firebasestorage")) ? NetworkImage(filteredPets[index].imageUrl.toString()) : const AssetImage('images/no_image.png') as ImageProvider,
+                fit: BoxFit.cover,
               ),
             ),
-          Text(
-            filteredPets[index].name
           ),
+          Text(filteredPets[index].name),
         ],
       ),
     );
@@ -102,8 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildPetCategory(bool isSelected, int itemIndex, String category) {
     return GestureDetector(
       onTap: () async => {
-        print(
-            'currentCategoryIndex $currentCategoryIndex categories[currentCategoryIndex].name ${categories[itemIndex].name}'),
+        print('currentCategoryIndex $currentCategoryIndex categories[currentCategoryIndex].name ${categories[itemIndex].name}'),
         await updatedSortedList(categories[itemIndex].type),
         setState(() {
           currentCategoryIndex = itemIndex;
@@ -143,7 +139,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget getHomePage() {
-
     return Container(
       height: double.infinity,
       color: Color(0xFFF5EDE2),
@@ -171,8 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   controller: _scrollController,
                   itemCount: categories.length,
                   itemBuilder: (context, index) {
-                    return _buildPetCategory(index == currentCategoryIndex,
-                        index, categories[index].name);
+                    return _buildPetCategory(index == currentCategoryIndex, index, categories[index].name);
                   })),
           SizedBox(
               height: 600.0,
@@ -209,8 +203,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) =>
-                          UserProfilePage(appUser: widget.appUser),
+                      builder: (context) => UserProfilePage(appUser: widget.appUser),
                     ),
                   );
                 },
@@ -234,8 +227,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     controller: _scrollController,
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
-                      return _buildPetCategory(index == currentCategoryIndex,
-                          index, categories[index].name);
+                      return _buildPetCategory(index == currentCategoryIndex, index, categories[index].name);
                     })),
             SizedBox(
                 height: 600.0,
@@ -244,13 +236,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     controller: _petsScrollController,
                     itemCount: filteredPets.length,
                     itemBuilder: (context, index) {
-                      return _buildPetItem(
-                          index == currentCategoryIndex, index);
+                      return _buildPetItem(index == currentCategoryIndex, index);
                     })),
           ],
         ),
       ),
-
       drawer: Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
         // through the options in the drawer if there isn't enough vertical
@@ -278,7 +268,6 @@ class _MyHomePageState extends State<MyHomePage> {
               onTap: () {
                 Navigator.of(context).push(MaterialPageRoute(
                   builder: (_) => UserProfilePage(appUser: widget.appUser),
-                  
                 ));
               },
             ),
@@ -292,10 +281,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               },
             ),
+            ListTile(
+              title: const Text('Favorites'),
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => FavoritePetsScreen(
+                      userEmail: widget.appUser!.email,
+                    ),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

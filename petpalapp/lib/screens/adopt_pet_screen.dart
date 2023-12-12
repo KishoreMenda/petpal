@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:petpalapp/screens/add_pet_screen.dart';
 import 'package:petpalapp/screens/home_screen.dart';
@@ -9,11 +10,13 @@ import 'package:petpalapp/view_model/pet_view_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:convert/convert.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:petpalapp/view_model/user_view_model.dart';
 
 class AdoptPetScreen extends StatefulWidget {
   final Pet pet;
+  final User? appUserf;
 
-  AdoptPetScreen({required this.pet});
+  AdoptPetScreen({required this.pet, this.appUserf});
 
   @override
   _AdoptPetScreenState createState() => _AdoptPetScreenState();
@@ -119,13 +122,45 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
       }
     } else if (Platform.isAndroid) {
       // Android
-      final url = Uri.parse(
-          'https://www.google.com/maps/search/?api=1&query=$lat,$lon');
+      final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=$lat,$lon');
       if (await canLaunchUrl(url)) {
         await launchUrl(url);
       } else {
         print('Could not launch $url');
       }
+    }
+  }
+
+  Future<void> addFavorite(String userEmail, Pet pet) async {
+    try {
+      // Reference to the user's favorites collection
+      CollectionReference favoritesCollection = FirebaseFirestore.instance.collection('favorites');
+
+      // Reference to the user's document in the favorites collection
+      DocumentReference userDocument = favoritesCollection.doc(userEmail);
+
+      // Reference to the favorite pet's document within the user's favorites
+      DocumentReference petDocument = userDocument.collection('favoritePets').doc(widget.pet.name);
+
+      // Set the data for the favorite pet
+      await petDocument.set({
+        'name': pet.name,
+        'imageUrl': pet.imageUrl,
+        'description': pet.description,
+        'age': pet.age,
+        'sex': pet.sex,
+        'weight': pet.weight,
+        'petType': pet.petType,
+        'latit': pet.latit,
+        'longit': pet.longit,
+        // Add other properties as needed
+      });
+
+      // Print success or handle as needed
+      print('Pet added to favorites');
+    } catch (e) {
+      // Handle the exception (e.g., show an error message)
+      print('Error adding pet to favorites: $e');
     }
   }
 
@@ -151,11 +186,7 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                       height: 350.0,
                       decoration: BoxDecoration(
                         image: DecorationImage(
-                          image:
-                              (widget.pet.imageUrl.contains("firebasestorage"))
-                                  ? NetworkImage(widget.pet.imageUrl.toString())
-                                  : const AssetImage('images/no_image.png')
-                                      as ImageProvider,
+                          image: (widget.pet.imageUrl.contains("firebasestorage")) ? NetworkImage(widget.pet.imageUrl.toString()) : const AssetImage('images/no_image.png') as ImageProvider,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -191,36 +222,41 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                     ],
                   ),
                 ),
+                GestureDetector(
+                  onTap: () {
+                    addFavorite(widget.appUserf!.email, widget.pet);
+                  },
+                  child: Icon(
+                    Icons.favorite_border,
+                    size: 30.0,
+                    color: Theme.of(context).primaryColor,
+                  ),
+                ),
                 ListTile(
-                  title: const Text('Location'),
-                  subtitle: SizedBox(
-                    height: 150,
-                    child: GoogleMap(
-                      onMapCreated: _onMapCreated,
-                      zoomControlsEnabled: false,
-                      mapToolbarEnabled: false,
-                      initialCameraPosition: CameraPosition(
-                        target: LatLng(double.parse(widget.pet.latit),
-                            double.parse(widget.pet.longit)),
-                        zoom: 15.0,
-                      ),
-                      markers: <Marker>{
-                        Marker(
-                          markerId: MarkerId(widget.pet.name),
-                          position: LatLng(double.parse(widget.pet.latit),
-                              double.parse(widget.pet.longit)),
-                          infoWindow: InfoWindow(title: widget.pet.name),
+                    title: const Text('Location'),
+                    subtitle: SizedBox(
+                      height: 150,
+                      child: GoogleMap(
+                        onMapCreated: _onMapCreated,
+                        zoomControlsEnabled: false,
+                        mapToolbarEnabled: false,
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(double.parse(widget.pet.latit), double.parse(widget.pet.longit)),
+                          zoom: 15.0,
                         ),
-                      },
-                    ),
-                  )),
+                        markers: <Marker>{
+                          Marker(
+                            markerId: MarkerId(widget.pet.name),
+                            position: LatLng(double.parse(widget.pet.latit), double.parse(widget.pet.longit)),
+                            infoWindow: InfoWindow(title: widget.pet.name),
+                          ),
+                        },
+                      ),
+                    )),
                 Container(
                   padding: EdgeInsets.all(16.0),
                   child: FutureBuilder<String>(
-                      future: reverseGeocode(
-                          double.parse(widget.pet.latit),
-                          double.parse(widget.pet.longit),
-                          "AIzaSyD-VBmD1uCO73BlnfOkIBZQeEhjaUJ-YS8"),
+                      future: reverseGeocode(double.parse(widget.pet.latit), double.parse(widget.pet.longit), "AIzaSyD-VBmD1uCO73BlnfOkIBZQeEhjaUJ-YS8"),
                       builder: (context, snapshot) {
                         if (snapshot.connectionState == ConnectionState.waiting) {
                           return CircularProgressIndicator();
@@ -243,11 +279,9 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                         );
                       }),
                 ),
-                ElevatedButton(
-                  onPressed: _openMaps, child: const Text("Open on Maps")),
+                ElevatedButton(onPressed: _openMaps, child: const Text("Open on Maps")),
                 Container(
-                  margin:
-                      const EdgeInsets.only(left: 20.0, top: 30.0, right: 20.0),
+                  margin: const EdgeInsets.only(left: 20.0, top: 30.0, right: 20.0),
                   width: double.infinity,
                   height: 90.0,
                   decoration: const BoxDecoration(
