@@ -39,6 +39,7 @@ class _SignupPageState extends State<SignupPage> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
+//used help of flutter dcoumententation and chatgpt for error codes
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       try {
@@ -56,7 +57,6 @@ class _SignupPageState extends State<SignupPage> {
           print('password: ${_passwordController.text}');
         }
 
-        // Navigate to the sign-in page
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => LoginPage()),
@@ -77,6 +77,7 @@ class _SignupPageState extends State<SignupPage> {
     }
   }
 
+//used help of flutter dcoumententation and chatgpt building form fields for knowing the syntax
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -195,16 +196,13 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<void> storeUserInFirebase() async {
     try {
-      // Create a map with user details
       String fullName = '${_firstNameController.text} ${_lastNameController.text}';
       String email = _emailController.text;
 
-      // Create a map with user details
       Map<String, String> userMap = {
         'name': fullName,
         'email': email,
       };
-      // Call the writePetDetailsMap function to store the user details in Firebase
       await widget.firebaseStorage.writeUserDetails(userMap);
 
       print('Google User details stored in Firebase.');
