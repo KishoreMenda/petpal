@@ -1,6 +1,8 @@
 # petpal
 
+# Recording of the app
 
+[Petpal app recording](https://csuchico-my.sharepoint.com/:v:/g/personal/kmenda1_csuchico_edu/ERDTANnUDhRGmrt3Be_ybhgBJsTlT4cj4lyqCoXl4YraCQ?nav=eyJyZWZlcnJhbEluZm8iOnsicmVmZXJyYWxBcHAiOiJTdHJlYW1XZWJBcHAiLCJyZWZlcnJhbFZpZXciOiJTaGFyZURpYWxvZy1MaW5rIiwicmVmZXJyYWxBcHBQbGF0Zm9ybSI6IldlYiIsInJlZmVycmFsTW9kZSI6InZpZXcifX0%3D&e=rAPGUa)
 
 ## Getting started
 
