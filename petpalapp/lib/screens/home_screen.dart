@@ -94,9 +94,9 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.only(bottom: 40.0, top: 10.0),
             child: Text(
               filteredPets[index].name,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 20.0,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
@@ -121,7 +121,7 @@ class _MyHomePageState extends State<MyHomePage> {
         margin: const EdgeInsets.all(9.0),
         width: 60.0,
         decoration: BoxDecoration(
-          color: isSelected ? Color(0xFFED7A4D) : Color(0xFFF8F2F7),
+          color: isSelected ? const Color(0xFFED7A4D) : const Color(0xFFF8F2F7),
           borderRadius: BorderRadius.circular(20.0),
         ),
         child: Center(
@@ -129,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
             category,
             style: TextStyle(
               fontSize: 14.0,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.bold,
               color: isSelected ? Colors.white : Colors.black,
             ),
           ),
@@ -152,24 +152,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget getHomePage() {
     return Container(
       height: double.infinity,
-      color: Color(0xFFF5EDE2),
+      color: const Color(0xFFF5EDE2),
       child: ListView(
         children: <Widget>[
-          Container(
-            padding: const EdgeInsets.only(left: 40.0, top: 40.0),
-            alignment: Alignment.centerLeft,
-            child: CircleAvatar(
-              child: ClipOval(
-                child: Image(
-                  height: 40.0,
-                  width: 40.0,
-                  image: AssetImage('images/user.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 40.0),
+          const SizedBox(height: 10.0),
           SizedBox(
               height: 100.0,
               child: ListView.builder(
@@ -206,32 +192,6 @@ class _MyHomePageState extends State<MyHomePage> {
         color: Color(0xFFF5EDE2),
         child: ListView(
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.only(left: 40.0, top: 40.0),
-              alignment: Alignment.centerLeft,
-              child: GestureDetector(
-                onTap: () {
-                  // Navigate to UserProfileScreen when the CircleAvatar is tapped
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          UserProfilePage(appUser: widget.appUser),
-                    ),
-                  );
-                },
-                child: CircleAvatar(
-                  child: ClipOval(
-                    child: Image(
-                      height: 40.0,
-                      width: 40.0,
-                      image: AssetImage('images/user.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-              ),
-            ),
             const SizedBox(height: 40.0),
             SizedBox(
                 height: 100.0,
@@ -264,12 +224,34 @@ class _MyHomePageState extends State<MyHomePage> {
           // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Color(0xFFED7A4D),
-              ),
-              child: Text('PetPal'),
-            ),
+            DrawerHeader(
+                decoration: const BoxDecoration(
+                  color: Color(0xFFED7A4D),
+                ),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      const Text('PetPal'),
+                      GestureDetector(
+                        onTap: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  UserProfilePage(appUser: widget.appUser),
+                            ),
+                          )
+                        },
+                        child: const ClipOval(
+                          child: Image(
+                            height: 50.0,
+                            width: 50.0,
+                            image: AssetImage('images/user.png'),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ])),
             ListTile(
               title: const Text('Home'),
               onTap: () {
@@ -294,6 +276,12 @@ class _MyHomePageState extends State<MyHomePage> {
                     builder: (_) => AddPetScreen(),
                   ),
                 );
+              },
+            ),
+            ListTile(
+              title: const Text('Sign Out'),
+              onTap: () {
+                handleSignOut(context);
               },
             ),
           ],

@@ -40,6 +40,7 @@ class CounterStorage {
           // Convert each document to a Pet object or use it as needed
           Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
           return Pet(
+             // docID: doc.id,
               name: data['name'].toString(),
               imageUrl: data['imageUrl'].toString(),
               description: data['description'].toString(),
@@ -55,6 +56,7 @@ class CounterStorage {
         }).toList();
         onDataChanged?.call();
         updatedSortedList(lastFilterType);
+        //updatedCurrentUserPetsList();
         // Process the updated data, you can notify listeners or perform other actions here
         print("Updated Pets: ${pets.length}");
       },
@@ -69,6 +71,27 @@ class CounterStorage {
 
   CounterStorage() {
     initializeDefault();
+  }
+
+    Future<bool> deletePetDoc(String docID) async {
+    try {
+      if (!isInitialized) {
+        await initializeDefault();
+      }
+      FirebaseFirestore firestore = FirebaseFirestore.instance;
+      await firestore
+          .collection("petpal-db")
+          .doc(docID)
+          .delete()
+          .then((value) {
+        print("delete doc $docID sucess");
+      }).catchError((error) {
+        print("Failed to delete doc : $error");
+      });
+    } catch (e) {
+      print(e);
+    }
+    return false;
   }
 
   Future<bool> writePetDetailsMap(Map<String, String> inputMap) async {

@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:location/location.dart';
 import 'package:petpalapp/screens/home_screen.dart';
 import 'package:petpalapp/storage.dart';
+import 'package:petpalapp/view_model/pet_view_model.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -137,7 +138,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
           thickness: 10,
           child: Container(
             height: double.infinity,
-            color: Color(0xFFF5EDE2),
+            color: const Color(0xFFF5EDE2),
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: ListView(
@@ -203,49 +204,49 @@ class _AddPetScreenState extends State<AddPetScreen> {
                       print("onChanged $value"),
                       name = value,
                     },
-                    decoration: InputDecoration(labelText: 'Pet Name'),
+                    decoration: const InputDecoration(labelText: 'Pet Name'),
                   ),
                   TextField(
                     onChanged: (value) => {
                       print("onChanged $value"),
                       gender = value,
                     },
-                    decoration: InputDecoration(labelText: 'Gender'),
+                    decoration: const InputDecoration(labelText: 'Gender'),
                   ),
                   TextField(
                     onChanged: (value) => {
                       print("onChanged $value"),
                       age = value,
                     },
-                    decoration: InputDecoration(labelText: 'Age'),
+                    decoration: const InputDecoration(labelText: 'Age'),
                   ),
                   TextField(
                     onChanged: (value) => {
                       print("onChanged $value"),
                       weight = value,
                     },
-                    decoration: InputDecoration(labelText: 'Weight'),
+                    decoration: const InputDecoration(labelText: 'Weight'),
                   ),
                   TextField(
                     onChanged: (value) => {
                       print("onChanged $value"),
                       description = value,
                     },
-                    decoration: InputDecoration(labelText: 'Description '),
+                    decoration: const InputDecoration(labelText: 'Description '),
                   ),
                   TextField(
                     onChanged: (value) => {
                       print("onChanged $value"),
                       ownerName = value,
                     },
-                    decoration: InputDecoration(labelText: 'Owner Name'),
+                    decoration: const InputDecoration(labelText: 'Owner Name'),
                   ),
                   TextField(
                     onChanged: (value) => {
                       print("onChanged $value"),
                       emailID = value,
                     },
-                    decoration: InputDecoration(labelText: 'Email ID'),
+                    decoration: const InputDecoration(labelText: 'Email ID'),
                   ),
                   // TextField(
                   //   onChanged: (value) => {
@@ -415,6 +416,12 @@ class _AddPetScreenState extends State<AddPetScreen> {
                     builder: (_) => AddPetScreen(),
                   ),
                 );
+              },
+            ),
+            ListTile(
+              title: const Text('Sign Out'),
+              onTap: () {
+                handleSignOut(context);
               },
             ),
           ],

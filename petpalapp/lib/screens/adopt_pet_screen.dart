@@ -55,9 +55,9 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
 
   Widget getWidget(String label, String info) {
     return Container(
-      margin: const EdgeInsets.all(6.0),
+      margin: const EdgeInsets.all(9.0),
       decoration: BoxDecoration(
-        color: Color(0xFFF8F2F7),
+        color: const Color(0xFFF8F2F7),
         borderRadius: BorderRadius.circular(20.0),
       ),
       width: 80.0,
@@ -68,11 +68,11 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
             label,
             style: TextStyle(
               fontSize: 16.0,
-              fontWeight: FontWeight.w600,
+              fontWeight: FontWeight.bold,
               color: Colors.amber[800],
             ),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           Text(info),
         ],
       ),
@@ -80,8 +80,8 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
   }
 
   Future<String> reverseGeocode(double lat, double lon, String apiKey) async {
-    final baseUrl = 'maps.googleapis.com';
-    final path = '/maps/api/geocode/json';
+    const baseUrl = 'maps.googleapis.com';
+    const path = '/maps/api/geocode/json';
     final params = {
       'latlng': '$lat,$lon',
       'key': apiKey,
@@ -144,9 +144,7 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Stack(
-                  children: <Widget>[
-                    Container(
+                Container(
                       width: double.infinity,
                       height: 350.0,
                       decoration: BoxDecoration(
@@ -160,17 +158,15 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                         ),
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 40.0),
+                  padding: const EdgeInsets.only(left: 16.0),
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
                         widget.pet.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
                         ),
@@ -179,7 +175,7 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                     ],
                   ),
                 ),
-                Container(
+                SizedBox(
                   height: 120.0,
                   child: ListView(
                     scrollDirection: Axis.horizontal,
@@ -192,28 +188,28 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                   ),
                 ),
                 ListTile(
-                  title: const Text('Location'),
-                  subtitle: SizedBox(
-                    height: 150,
-                    child: GoogleMap(
-                      onMapCreated: _onMapCreated,
-                      zoomControlsEnabled: false,
-                      mapToolbarEnabled: false,
-                      initialCameraPosition: CameraPosition(
-                        target: LatLng(double.parse(widget.pet.latit),
-                            double.parse(widget.pet.longit)),
-                        zoom: 15.0,
-                      ),
-                      markers: <Marker>{
-                        Marker(
-                          markerId: MarkerId(widget.pet.name),
-                          position: LatLng(double.parse(widget.pet.latit),
+                    title: const Text('Location'),
+                    subtitle: SizedBox(
+                      height: 150,
+                      child: GoogleMap(
+                        onMapCreated: _onMapCreated,
+                        zoomControlsEnabled: false,
+                        mapToolbarEnabled: false,
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(double.parse(widget.pet.latit),
                               double.parse(widget.pet.longit)),
-                          infoWindow: InfoWindow(title: widget.pet.name),
+                          zoom: 15.0,
                         ),
-                      },
-                    ),
-                  )),
+                        markers: <Marker>{
+                          Marker(
+                            markerId: MarkerId(widget.pet.name),
+                            position: LatLng(double.parse(widget.pet.latit),
+                                double.parse(widget.pet.longit)),
+                            infoWindow: InfoWindow(title: widget.pet.name),
+                          ),
+                        },
+                      ),
+                    )),
                 Container(
                   padding: EdgeInsets.all(16.0),
                   child: FutureBuilder<String>(
@@ -222,7 +218,8 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                           double.parse(widget.pet.longit),
                           "AIzaSyD-VBmD1uCO73BlnfOkIBZQeEhjaUJ-YS8"),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
                           return CircularProgressIndicator();
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
@@ -243,46 +240,44 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                         );
                       }),
                 ),
-                ElevatedButton(
-                  onPressed: _openMaps, child: const Text("Open on Maps")),
-                Container(
-                  margin:
-                      const EdgeInsets.only(left: 20.0, top: 30.0, right: 20.0),
-                  width: double.infinity,
-                  height: 90.0,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFFFF2D0),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(20.0),
-                      bottomLeft: Radius.circular(20.0),
-                    ),
-                  ),
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20.0,
-                      vertical: 8.0,
-                    ),
-                    leading: const CircleAvatar(
-                      child: ClipOval(
-                        child: Image(
-                          height: 40.0,
-                          width: 40.0,
-                          image: AssetImage('images/user.png'),
-                          fit: BoxFit.cover,
-                        ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                child: ElevatedButton(
+                    onPressed: _openMaps, child: const Text("Open on Maps"))),
+                const SizedBox(height: 16.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: Row(
+                    children: [
+                      const Text(
+                        "Owner:",
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
-                    ),
-                    title: Text(widget.pet.ownerName),
-                    subtitle: const Text("Owner"),
+                      const SizedBox(width: 16.0),
+                      Text(widget.pet.ownerName)
+                    ],
                   ),
                 ),
-                ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 8.0,
+                const SizedBox(height: 16.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 16.0),
+                  child: Row(
+                    children: [
+                      const Text(
+                        "Email ID:",
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(width: 16.0),
+                      Text(widget.pet.emailID)
+                    ],
                   ),
-                  title: Text(widget.pet.emailID),
-                  subtitle: const Text("Contact with above email"),
+                ),
+                const SizedBox(width: 16.0),
+                const Padding(
+                  padding: EdgeInsets.only(left: 16.0),
+                  child: Text("Contact with above email")
                 ),
                 const SizedBox(height: 16.0),
               ],
@@ -320,6 +315,12 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                     builder: (_) => AddPetScreen(),
                   ),
                 );
+              },
+            ),
+            ListTile(
+              title: const Text('Sign Out'),
+              onTap: () {
+                handleSignOut(context);
               },
             ),
           ],

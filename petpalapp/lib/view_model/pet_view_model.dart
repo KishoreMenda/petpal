@@ -1,3 +1,7 @@
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:petpalapp/signup.dart';
+
 class Category {
   String name;
   String type;
@@ -47,11 +51,13 @@ var categories = [
 ];
 
 var filteredPets = [];
-var lastFilterType = '';
+var lastFilterType = 'all';
 var pets = [];
 var categoriesIndex = 0;
+var currentUserPets = [];
 
 Future updatedSortedList(String petType) async {
+  print("manasash $lastFilterType input $petType");
   lastFilterType = petType;
   if (petType.toLowerCase() == 'all') {
     filteredPets = pets;
@@ -68,3 +74,31 @@ Future updatedSortedList(String petType) async {
 
   print('updatedSortedList($petType)   $filteredPets');
 }
+
+Future<void> handleSignOut(BuildContext context) async {
+    try {
+      GoogleSignIn _googleSignIn = GoogleSignIn();
+      await _googleSignIn.signOut();
+
+      // Navigate to the login or home screen after sign-out
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SignupPage(),
+        ),
+      );
+    } catch (error) {
+      print("Error signing out: $error");
+    }
+  }
+
+//   Future updatedSortedList(String petType) async {
+//   print("manasash $lastFilterType input $petType");
+//   lastFilterType = petType;
+
+//   currentUserPets = pets
+//         .where((pet) => pet.petType.toLowerCase() == petType.toLowerCase())
+//         .toList();
+
+//   print('updatedSortedList($petType)   $filteredPets');
+// }
