@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:petpalapp/signup.dart';
 
+// used https://www.youtube.com/watch?app=desktop&v=7eu_U6UClik as reference to decide on code structuring
 class Category {
   String name;
   String type;

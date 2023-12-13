@@ -63,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+// used https://www.youtube.com/watch?app=desktop&v=7eu_U6UClik and flutter api doc as reference to learn handling of listveiw
   Widget _buildPetItem(bool isSelected, int index) {
     return GestureDetector(
       onTap: () => {
@@ -216,6 +217,8 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+
+      // Used help of flutter api webpage to learn drawer and bottom navigation bar.
       drawer: Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
         // through the options in the drawer if there isn't enough vertical

@@ -4,6 +4,8 @@ import 'package:flutter/widgets.dart';
 
 import 'view_model/pet_view_model.dart';
 
+
+// Referred class assignment for knowing how to use firebase
 class CounterStorage {
   bool _initialized = false;
   VoidCallback? onDataChanged; // Callback to notify listeners

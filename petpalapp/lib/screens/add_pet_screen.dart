@@ -588,6 +588,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
   }
 
   void _showOptions() {
+    // used help of flutter api and chatgpt to learn how to show the options to choose source of image.
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
