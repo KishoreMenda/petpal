@@ -15,8 +15,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:geolocator_platform_interface/src/enums/location_accuracy.dart'
-    as geo;
+import 'package:geolocator_platform_interface/src/enums/location_accuracy.dart' as geo;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:petpalapp/screens/map_screen.dart';
@@ -125,6 +124,8 @@ class _AddPetScreenState extends State<AddPetScreen> {
   String latitude = '';
   String longitude = '';
 
+  //used help of flutter dcoumententation and chatgpt to set locations on map
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -187,16 +188,14 @@ class _AddPetScreenState extends State<AddPetScreen> {
                         selectedCategory = category;
                       });
                     },
-                    dropdownMenuEntries: CategoryLabel.values
-                        .map<DropdownMenuEntry<CategoryLabel>>(
-                            (CategoryLabel category) {
+                    dropdownMenuEntries: CategoryLabel.values.map<DropdownMenuEntry<CategoryLabel>>((CategoryLabel category) {
                       return DropdownMenuEntry<CategoryLabel>(
-                          value: category, label: category.label,
-                          enabled: category.label != CategoryLabel.choose.label,
-                          // style: MenuItemButton.styleFrom(
-                          //   foregroundColor: color.color,
-                          // ),
-                          );
+                        value: category, label: category.label,
+                        enabled: category.label != CategoryLabel.choose.label,
+                        // style: MenuItemButton.styleFrom(
+                        //   foregroundColor: color.color,
+                        // ),
+                      );
                     }).toList(),
                   ),
                   TextField(
@@ -261,8 +260,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                       print('Clicked on mapssss');
                       // Open the MapScreen and get the selected location
                       try {
-                        LatLng? location =
-                            await Navigator.of(context).push(MaterialPageRoute(
+                        LatLng? location = await Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => MapScreen(
                             initialLocation: LatLng(
                               double.parse(latitude),
@@ -315,16 +313,13 @@ class _AddPetScreenState extends State<AddPetScreen> {
                       foregroundColor: Colors.white, // Text color
                     ),
                     onPressed: () async {
-                      String uniqueFileName =
-                          DateTime.now().millisecondsSinceEpoch.toString();
+                      String uniqueFileName = DateTime.now().millisecondsSinceEpoch.toString();
 
                       //Get a reference to storage root
                       Reference referenceRoot = FirebaseStorage.instance.ref();
-                      Reference referenceDirImages =
-                          referenceRoot.child('images');
+                      Reference referenceDirImages = referenceRoot.child('images');
                       //Create a reference for the image to be stored
-                      Reference referenceImageToUpload =
-                          referenceDirImages.child(uniqueFileName);
+                      Reference referenceImageToUpload = referenceDirImages.child(uniqueFileName);
 
                       try {
                         if (_image == null ||
@@ -335,7 +330,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                             description == '' ||
                             ownerName == '' ||
                             emailID == '' ||
-                           // phoneNumber == '' ||
+                            // phoneNumber == '' ||
                             selectedCategory == CategoryLabel.choose) {
                           showToast('Fill all the info');
 
@@ -347,11 +342,9 @@ class _AddPetScreenState extends State<AddPetScreen> {
                           print("putFile ${_image?.path}");
                           await referenceImageToUpload.putFile(_image!);
                           //Success: get the download URL
-                          imageUrl =
-                              await referenceImageToUpload.getDownloadURL();
+                          imageUrl = await referenceImageToUpload.getDownloadURL();
                           print("Download URL $imageUrl");
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('$imageUrl')));
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$imageUrl')));
                         }
                       } catch (error) {
                         //Some error occurred
@@ -367,7 +360,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                         "name": name,
                         "imageUrl": imageUrl,
                         "description": description,
-                        "weight" : weight,
+                        "weight": weight,
                         "age": age,
                         "sex": gender,
                         "color": 'Black',
@@ -454,15 +447,10 @@ class _AddPetScreenState extends State<AddPetScreen> {
       accuracy: geo.LocationAccuracy.high,
       distanceFilter: 100,
     );
-    positionStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings);
-    positionSubscriberStream =
-        Geolocator.getPositionStream(locationSettings: locationSettings)
-            .listen((Position? position) {
+    positionStream = Geolocator.getPositionStream(locationSettings: locationSettings);
+    positionSubscriberStream = Geolocator.getPositionStream(locationSettings: locationSettings).listen((Position? position) {
       if (kDebugMode) {
-        print(position == null
-            ? 'Unknown'
-            : '${position.latitude.toString()}, ${position.longitude.toString()}');
+        print(position == null ? 'Unknown' : '${position.latitude.toString()}, ${position.longitude.toString()}');
       }
     });
   }
@@ -520,8 +508,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      return Future.error('Location permissions are permanently denied, we cannot request permissions.');
     }
 
     // When we reach here, permissions are granted and we can
@@ -563,8 +550,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
       //Success: get the download URL
       imageUrl = await referenceImageToUpload.getDownloadURL();
       print("Download URL $imageUrl");
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('$imageUrl')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('$imageUrl')));
     } catch (error) {
       //Some error occurred
       print("Failed to upload image $error");

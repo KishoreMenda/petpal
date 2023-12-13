@@ -104,6 +104,7 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
     return 'Reverse geocoding failed';
   }
 
+  //used help of flutter dcoumententation and chatpt to build this maps function
   Future<void> _openMaps() async {
     final lat = double.parse(widget.pet.latit);
     final lon = double.parse(widget.pet.longit);
@@ -119,8 +120,7 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
       }
     } else if (Platform.isAndroid) {
       // Android
-      final url = Uri.parse(
-          'https://www.google.com/maps/search/?api=1&query=$lat,$lon');
+      final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=$lat,$lon');
       if (await canLaunchUrl(url)) {
         await launchUrl(url);
       } else {
@@ -129,6 +129,7 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
     }
   }
 
+//used chatgpt and flutter documentation to build markers on map
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -145,19 +146,15 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                      width: double.infinity,
-                      height: 350.0,
-                      decoration: BoxDecoration(
-                        image: DecorationImage(
-                          image:
-                              (widget.pet.imageUrl.contains("firebasestorage"))
-                                  ? NetworkImage(widget.pet.imageUrl.toString())
-                                  : const AssetImage('images/no_image.png')
-                                      as ImageProvider,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+                  width: double.infinity,
+                  height: 350.0,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: (widget.pet.imageUrl.contains("firebasestorage")) ? NetworkImage(widget.pet.imageUrl.toString()) : const AssetImage('images/no_image.png') as ImageProvider,
+                      fit: BoxFit.cover,
                     ),
+                  ),
+                ),
                 const SizedBox(height: 20.0),
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
@@ -196,15 +193,13 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                         zoomControlsEnabled: false,
                         mapToolbarEnabled: false,
                         initialCameraPosition: CameraPosition(
-                          target: LatLng(double.parse(widget.pet.latit),
-                              double.parse(widget.pet.longit)),
+                          target: LatLng(double.parse(widget.pet.latit), double.parse(widget.pet.longit)),
                           zoom: 15.0,
                         ),
                         markers: <Marker>{
                           Marker(
                             markerId: MarkerId(widget.pet.name),
-                            position: LatLng(double.parse(widget.pet.latit),
-                                double.parse(widget.pet.longit)),
+                            position: LatLng(double.parse(widget.pet.latit), double.parse(widget.pet.longit)),
                             infoWindow: InfoWindow(title: widget.pet.name),
                           ),
                         },
@@ -213,13 +208,9 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                 Container(
                   padding: EdgeInsets.all(16.0),
                   child: FutureBuilder<String>(
-                      future: reverseGeocode(
-                          double.parse(widget.pet.latit),
-                          double.parse(widget.pet.longit),
-                          "AIzaSyD-VBmD1uCO73BlnfOkIBZQeEhjaUJ-YS8"),
+                      future: reverseGeocode(double.parse(widget.pet.latit), double.parse(widget.pet.longit), "AIzaSyD-VBmD1uCO73BlnfOkIBZQeEhjaUJ-YS8"),
                       builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
+                        if (snapshot.connectionState == ConnectionState.waiting) {
                           return CircularProgressIndicator();
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
@@ -240,10 +231,7 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                         );
                       }),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 16.0),
-                child: ElevatedButton(
-                    onPressed: _openMaps, child: const Text("Open on Maps"))),
+                Padding(padding: const EdgeInsets.only(left: 16.0), child: ElevatedButton(onPressed: _openMaps, child: const Text("Open on Maps"))),
                 const SizedBox(height: 16.0),
                 Padding(
                   padding: const EdgeInsets.only(left: 16.0),
@@ -251,8 +239,7 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                     children: [
                       const Text(
                         "Owner:",
-                        style: TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(width: 16.0),
                       Text(widget.pet.ownerName)
@@ -266,8 +253,7 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                     children: [
                       const Text(
                         "Email ID:",
-                        style: TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(width: 16.0),
                       Text(widget.pet.emailID)
@@ -275,10 +261,7 @@ class _AdoptPetScreenState extends State<AdoptPetScreen> {
                   ),
                 ),
                 const SizedBox(width: 16.0),
-                const Padding(
-                  padding: EdgeInsets.only(left: 16.0),
-                  child: Text("Contact with above email")
-                ),
+                const Padding(padding: EdgeInsets.only(left: 16.0), child: Text("Contact with above email")),
                 const SizedBox(height: 16.0),
               ],
             ),

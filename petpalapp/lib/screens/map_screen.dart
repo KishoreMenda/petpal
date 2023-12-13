@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 
 String address = '';
 
+//Used chatgpt and flutter documentation for bulding this class
 class MapScreen extends StatefulWidget {
   late final LatLng? initialLocation;
   MapScreen({Key? key, this.initialLocation}) : super(key: key);
@@ -23,9 +24,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
-    // Use the initialLocation if provided, otherwise use default (0, 0)
     selectedLocation = widget.initialLocation ?? LatLng(0, 0);
-    // Initialize the address when the screen is created
   }
 
   @override
@@ -37,7 +36,6 @@ class _MapScreenState extends State<MapScreen> {
           IconButton(
             icon: Icon(Icons.check),
             onPressed: () {
-              // Return the selected location to the previous screen
               Navigator.of(context).pop(selectedLocation);
             },
           ),
@@ -45,7 +43,7 @@ class _MapScreenState extends State<MapScreen> {
       ),
       body: GoogleMap(
         initialCameraPosition: CameraPosition(
-          target: selectedLocation, // Initial map position
+          target: selectedLocation,
           zoom: 16.0,
         ),
         onMapCreated: (controller) {
@@ -55,15 +53,8 @@ class _MapScreenState extends State<MapScreen> {
           setState(() {
             selectedLocation = position;
           });
-          // Clear existing markers and add a new one
-          markers = {
-            Marker(markerId: MarkerId('selected'), position: position)
-          };
+          markers = {Marker(markerId: MarkerId('selected'), position: position)};
           _controller?.animateCamera(CameraUpdate.newLatLng(position));
-          // var ad = reverseGeocode(position.latitude, position.longitude, "AIzaSyD-VBmD1uCO73BlnfOkIBZQeEhjaUJ-YS8");
-          // setState(() {
-          //   address = ad as String;
-          // });
         },
         markers: markers,
       ),

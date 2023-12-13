@@ -12,6 +12,7 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
+//used help of flutter dcoumententation and chatgpt for error codes
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -50,14 +51,9 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> getUserDetails(String userEmail) async {
     try {
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
-          .collection('users') // Change to your collection name
-          .where('email', isEqualTo: userEmail)
-          .limit(1) // Assuming there's only one user with the same email
-          .get();
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance.collection('users').where('email', isEqualTo: userEmail).limit(1).get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        // Assuming each document in the "users" collection has a "name" field
         String u_name = querySnapshot.docs.first.get('name');
         String u_email = querySnapshot.docs.first.get('email');
         appUser = petpaluser.User(name: u_name, email: u_email);

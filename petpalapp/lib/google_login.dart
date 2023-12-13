@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,11 +39,9 @@ class _GoogleLoginState extends State<GoogleLogin> {
   }
 
   Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
     if (!_initialized) {
       await initializeDefault();
     }
-    // Trigger the authentication flow
     googleUser = await GoogleSignIn().signIn();
     if (kDebugMode) {
       print('The google user is ------------------------- $googleUser');
@@ -55,13 +51,11 @@ class _GoogleLoginState extends State<GoogleLogin> {
         print(googleUser!.email);
       }
     }
-    // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
     if (kDebugMode) {
       print('The google auth is ---------------------------$googleAuth');
     }
 
-    // Create a new credential
     final credential = GoogleAuthProvider.credential(
       accessToken: googleAuth?.accessToken,
       idToken: googleAuth?.idToken,
@@ -69,23 +63,19 @@ class _GoogleLoginState extends State<GoogleLogin> {
 
     UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
 
-    // WidgetsBinding.instance
     storeUserInFirebase(googleUser!);
     setState(() {});
 
-    // Once signed in, return the UserCredential
     return userCredential;
   }
 
   Future<void> storeUserInFirebase(GoogleSignInAccount googleUser) async {
     try {
-      // Create a map with user details
       Map<String, String> userMap = {
         'name': googleUser.displayName ?? '',
         'email': googleUser.email ?? '',
       };
 
-      // Call the writePetDetailsMap function to store the user details in Firebase
       await widget.firebaseStorage.writeUserDetails(userMap);
 
       print('Google User details stored in Firebase.');
@@ -96,14 +86,9 @@ class _GoogleLoginState extends State<GoogleLogin> {
 
   Future<void> getUserDetails(String userEmail) async {
     try {
-      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance
-          .collection('users') // Change to your collection name
-          .where('email', isEqualTo: userEmail)
-          .limit(1) // Assuming there's only one user with the same email
-          .get();
+      QuerySnapshot<Map<String, dynamic>> querySnapshot = await FirebaseFirestore.instance.collection('users').where('email', isEqualTo: userEmail).limit(1).get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        // Assuming each document in the "users" collection has a "name" field
         String u_name = querySnapshot.docs.first.get('name');
         String u_email = querySnapshot.docs.first.get('email');
         appUser = petpaluser.User(name: u_name, email: u_email);
@@ -118,21 +103,17 @@ class _GoogleLoginState extends State<GoogleLogin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('login with google'),
-        backgroundColor: const Color(0xFFF5EDE2),
-      ),
-      body: Container (
-        color: Color(0xFFF5EDE2),
-          child: Center(
-            
-            child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: getBody(),
-      )
-      )
-    )
-    );
+        appBar: AppBar(
+          title: const Text('login with google'),
+          backgroundColor: const Color(0xFFF5EDE2),
+        ),
+        body: Container(
+            color: Color(0xFFF5EDE2),
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: getBody(),
+            ))));
   }
 
   List<Widget> getBody() {
@@ -143,7 +124,6 @@ class _GoogleLoginState extends State<GoogleLogin> {
         UserCredential userCredential = await signInWithGoogle();
         await getUserDetails(googleUser!.email);
 
-        // Use the captured context outside the async gap
         await Future<void>.delayed(Duration.zero);
         Navigator.push(
           context,
