@@ -292,7 +292,7 @@ class _AddPetScreenState extends State<AddPetScreen> {
                     future: _position,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const CircularProgressIndicator();
+                        return const LinearProgressIndicator();
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else if (!snapshot.hasData) {
